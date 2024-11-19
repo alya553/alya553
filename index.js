@@ -1,103 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHIVA</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #ff007a, #ffb74d);
-            overflow: hidden;
-        }
-        .container {
-            text-align: center;
-            color: white;
-        }
-        .main-heading, .sub-heading {
-            font-size: 4rem;
-            margin: 0;
-            position: relative;
-            animation: glitch 1.5s infinite;
-        }
-        .main-heading {
-            font-size: 5rem;
-        }
-        .sub-heading {
-            font-size: 2rem;
-            margin-top: 10px;
-        }
-        .icons {
-            margin-top: 20px;
-        }
-        .icons a {
-            color: white;
-            margin: 0 15px;
-            font-size: 2rem;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        .icons a:hover {
-            color: #ffb74d;
-        }
-        @keyframes glitch {
-            0% {
-                transform: translate(0);
-                text-shadow: 1px 1px 0 #fff, -1px -1px 0 #ff007a;
-            }
-            20% {
-                transform: translate(-5px, 5px);
-                text-shadow: 2px 2px 0 #ff007a, -2px -2px 0 #ffb74d;
-            }
-            40% {
-                transform: translate(5px, -5px);
-                text-shadow: 1px 1px 0 #ffb74d, -1px -1px 0 #ff007a;
-            }
-            60% {
-                transform: translate(-5px, -5px);
-                text-shadow: 2px 2px 0 #fff, -2px -2px 0 #ff007a;
-            }
-            80% {
-                transform: translate(5px, 5px);
-                text-shadow: 1px 1px 0 #ff007a, -1px -1px 0 #ffb74d;
-            }
-            100% {
-                transform: translate(0);
-                text-shadow: 1px 1px 0 #fff, -1px -1px 0 #ff007a;
-            }
-        }
-        @media (max-width: 768px) {
-            .main-heading {
-                font-size: 3rem;
-            }
-            .sub-heading {
-                font-size: 1rem;
-            }
-            .icons a {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="main-heading">SHIVA</div>
-        <div class="sub-heading">BOT GHOST STATUS REMOVER v3</div>
-        <div class="icons">
-            <a href="https://discord.com/invite/xQF9f9yUEM" target="_blank" title="Discord"><i class="fab fa-discord"></i></a>
-            <a href="https://www.youtube.com/@GlaceYT" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-            <a href="https://github.com/GlaceYT" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
-        </div>
-    </div>
-</body>
-</html>
-                 
+/*
+
+☆.。.:*・°☆.。.:*・°☆.。.:*・°☆.。.:*・°☆
+                                                 
+  _________ ___ ___ ._______   _________    
+ /   _____//   |   \|   \   \ /   /  _  \   
+ \_____  \/    ~    \   |\   Y   /  /_\  \  
+ /        \    Y    /   | \     /    |    \ 
+/_______  /\___|_  /|___|  \___/\____|__  / 
+        \/       \/                     \/  
+                    
+DISCORD :  https://discord.com/invite/xQF9f9yUEM                   
+YouTube : https://www.youtube.com/@GlaceYT                         
+                                                                       
+☆.。.:*・°☆.。.:*・°☆.。.:*・°☆.。.:*・°☆
+
+
+*/
+const { Client, GatewayIntentBits, ActivityType } = require('discord.js');
+require('dotenv').config();
+const express = require('express');
+const path = require('path');
+
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds
+  ],
+});
+
+const app = express();
+const port = 3000;
+app.get('/', (req, res) => {
+  const imagePath = path.join(__dirname, 'index.html');
+  res.sendFile(imagePath);
+});
+app.listen(port, () => {
+  console.log('\x1b[36m[ SERVER ]\x1b[0m', '\x1b[32m SH : http://localhost:' + port + ' ✅\x1b[0m');
+});
+
+const statusMessages = ["🎧 Listening to Spotify", "🎮 Playing VALORANT"];
+const statusTypes = [ 'dnd', 'idle'];
+let currentStatusIndex = 0;
+let currentTypeIndex = 0;
+
+async function login() {
+  try {
+    await client.login(process.env.TOKEN);
+    console.log('\x1b[36m[ LOGIN ]\x1b[0m', `\x1b[32mLogged in as: ${client.user.tag} ✅\x1b[0m`);
+    console.log('\x1b[36m[ INFO ]\x1b[0m', `\x1b[35mBot ID: ${client.user.id} \x1b[0m`);
+    console.log('\x1b[36m[ INFO ]\x1b[0m', `\x1b[34mConnected to ${client.guilds.cache.size} server(s) \x1b[0m`);
+  } catch (error) {
+    console.error('\x1b[31m[ ERROR ]\x1b[0m', 'Failed to log in:', error);
+    process.exit(1);
+  }
+}
+
+function updateStatus() {
+  const currentStatus = statusMessages[currentStatusIndex];
+  const currentType = statusTypes[currentTypeIndex];
+  client.user.setPresence({
+    activities: [{ name: currentStatus, type: ActivityType.Custom }],
+    status: currentType,
+  });
+  console.log('\x1b[33m[ STATUS ]\x1b[0m', `Updated status to: ${currentStatus} (${currentType})`);
+  currentStatusIndex = (currentStatusIndex + 1) % statusMessages.length;
+  currentTypeIndex = (currentTypeIndex + 1) % statusTypes.length;
+}
+
+function heartbeat() {
+  setInterval(() => {
+    console.log('\x1b[35m[ HEARTBEAT ]\x1b[0m', `Bot is alive at ${new Date().toLocaleTimeString()}`);
+  }, 30000);
+}
+
+client.once('ready', () => {
+  console.log('\x1b[36m[ INFO ]\x1b[0m', `\x1b[34mPing: ${client.ws.ping} ms \x1b[0m`);
+  updateStatus();
+  setInterval(updateStatus, 10000);
+  heartbeat();
+});
+
+login();
+
+  
+/*
+
+☆.。.:*・°☆.。.:*・°☆.。.:*・°☆.。.:*・°☆
+                                                 
+  _________ ___ ___ ._______   _________    
+ /   _____//   |   \|   \   \ /   /  _  \   
+ \_____  \/    ~    \   |\   Y   /  /_\  \  
+ /        \    Y    /   | \     /    |    \ 
+/_______  /\___|_  /|___|  \___/\____|__  / 
+        \/       \/                     \/  
+                    
+DISCORD :  https://discord.com/invite/xQF9f9yUEM                   
+YouTube : https://www.youtube.com/@GlaceYT                         
+                                                                       
+☆.。.:*・°☆.。.:*・°☆.。.:*・°☆.。.:*・°☆
+
+
+*/
